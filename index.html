@@ -1,10 +1,11 @@
 <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-<body style="background:url(pic.jpg);background-size:auto 100%">
+<body style="background:url(pic.jpg) no-repeat;background-size:auto 100%">
     
     <h1 id="x">Testing</h1>
 </body>
 
 <script>
+    var bgWidth; 
     function getBackgroundSize(selector, callback) {
   var img = new Image(),
       // here we will place image's width and height
@@ -33,11 +34,16 @@
   // src should be set AFTER onload handler
   img.src = $(selector).css('background-image').replace(/url\(['"]*(.*?)['"]*\)/g, '$1');
 }
-    
+    function results(obj){
+        bgWidth = obj.width;
+    }
+  bg = getBackgroundSize("body",results);
+
     function handleOrientation(event){
         document.getElementById("x").innerHTML="x:"+event.alpha;
-        bg = getBackgroundSize($("body"));
-        pos = -bg*event.alpha/360;
+        
+    
+        pos = -bgWidth*event.alpha/360;
         $("body").css("background-position",pos+"px 0px");
     }
     window.addEventListener('deviceorientation', handleOrientation);
