@@ -1,11 +1,44 @@
-
-<body>
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<body style="background:url(pic.jpg);background-size:auto 100%">
+    
     <h1 id="x">Testing</h1>
 </body>
 
 <script>
+    function getBackgroundSize(selector, callback) {
+  var img = new Image(),
+      // here we will place image's width and height
+      width, height,
+      // here we get the size of the background and split it to array
+      backgroundSize = $(selector).css('background-size').split(' ');
+
+  // checking if width was set to pixel value
+  if (/px/.test(backgroundSize[0])) width = parseInt(backgroundSize[0]);
+  // checking if width was set to percent value
+  if (/%/.test(backgroundSize[0])) width = $(selector).parent().width() * (parseInt(backgroundSize[0]) / 100);
+  // checking if height was set to pixel value
+  if (/px/.test(backgroundSize[1])) height = parseInt(backgroundSize[1]);
+  // checking if height was set to percent value
+  if (/%/.test(backgroundSize[1])) height = $(selector).parent().height() * (parseInt(backgroundSize[0]) / 100);
+
+  img.onload = function () {
+    // check if width was set earlier, if not then set it now
+    if (typeof width == 'undefined') width = this.width;
+    // do the same with height
+    if (typeof height == 'undefined') height = this.height;
+    // call the callback
+    callback({ width: width, height: height });
+  }
+  // extract image source from css using one, simple regex
+  // src should be set AFTER onload handler
+  img.src = $(selector).css('background-image').replace(/url\(['"]*(.*?)['"]*\)/g, '$1');
+}
+    
     function handleOrientation(event){
         document.getElementById("x").innerHTML="x:"+event.alpha;
+        bg = getBackgroundSize($("body"));
+        pos = -bg*event.alpha/360;
+        $("body").css("background-position",pos+"px 0px");
     }
     window.addEventListener('deviceorientation', handleOrientation);
 </script>
