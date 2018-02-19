@@ -26,7 +26,7 @@ gn.init().then(function(){
     // data.dm.alpha	( devicemotion event rotationRate alpha value )
     // data.dm.beta		( devicemotion event rotationRate beta value )
     // data.dm.gamma	( devicemotion event rotationRate gamma value )
-      document.getElementById("x").innerHTML(data.dm.gy);
+      document.getElementById("x").innerHTML=data.dm.gy;
   });
 }).catch(function(e){
   // Catch if the DeviceOrientation or DeviceMotion is not supported by the browser or device
